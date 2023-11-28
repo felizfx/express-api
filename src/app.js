@@ -1,21 +1,21 @@
 import express from "express";
 import { conn } from "./config/db-connect.js";
-import routes from "./routes/index.js"
+import routes from "./routes/index.js";
+import exceptionManipulator from "./middlewares/exceptionManipulator.js";
+import manipulator404 from "./middlewares/manipulator404.js";
+import requestTime from "./middlewares/requestTime.js";
+import chalk from "chalk";
 
 const app = express();
-routes(app)
+app.use(requestTime);
+routes(app);
+app.use(manipulator404);
+app.use(exceptionManipulator);
 
-conn.then(data => {
-  console.log("conexão aberta!");
+conn.then(() => {
+	console.log(chalk.green("conexão aberta!"));
 }).catch(err => {
-  console.log(`%cERRO DE CONEXÃO: ${err.message}`, 'color: red');
-})
-
-app.delete("/servers/:id", (req, res) => {
-  const index = searchServer(req.params.id);
-  servers.splice(index, 1);
-
-  res.status(204).send();
+	console.log(chalk.red("ERRO DE CONEXÃO: ") + err.message);
 });
 
 export default app;

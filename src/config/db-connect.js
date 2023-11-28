@@ -1,21 +1,19 @@
 import mongoose from "mongoose";
 
-async function connectDatabase() {
-  mongoose.connect(process.env.MONGO_URL);
+export async function connectDatabase() {
+	mongoose.connect(process.env.MONGO_URL);
 
-  return mongoose.connection;
+	return mongoose.connection;
 }
 
-export const conn = new Promise(async (resolve, reject) => {
-  const connection = await connectDatabase()
+export const conn = new Promise((resolve, reject) => {
+	connectDatabase().then((e) => {
+		e.on("error", (error) => {
+			reject(error);
+		});
 
-  connection.on("error", (error) => {
-      reject(error)
-  });
-    
-  connection.once("open", (value) => {
-      resolve(value)
-  });
-})
-
-export { connectDatabase };
+		e.once("open", (value) => {
+			resolve(value);
+		});
+	});
+});
