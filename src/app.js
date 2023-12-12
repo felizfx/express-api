@@ -14,6 +14,10 @@ routes(app);
 app.use(manipulator404);
 app.use(exceptionManipulator);
 
+app.get("/", (req, res) => {
+	res.status(200).send("ola mundo");
+});
+
 conn.then(() => {
 	console.log(chalk.green("[data_base] connection opened"));
 }).catch(err => {
