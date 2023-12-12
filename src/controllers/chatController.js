@@ -97,11 +97,12 @@ class ChatController {
 
 	static async createChat(req, res, next) {
 		try {
-			req.body["createdAt"] = new Date();
+
+			const body = { ...req.body, createdAt: new Date() };
 			// const servers = await server.findById(req.body.server)
 			// const newChat = { ...req.body, server: servers }
 
-			let chats = await ChatModel.create(req.body);
+			let chats = await ChatModel.create(body);
 			chats = await chats.populate("server");
 
 			new CreatedResponse(undefined, undefined, chats).sendResponse(req, res);

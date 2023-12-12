@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import mongoose from "mongoose";
 
 export async function connectDatabase() {
@@ -7,6 +8,8 @@ export async function connectDatabase() {
 }
 
 export const conn = new Promise((resolve, reject) => {
+	console.log(chalk.yellow("[data_base] trying connection"));
+
 	connectDatabase().then((e) => {
 		e.on("error", (error) => {
 			reject(error);

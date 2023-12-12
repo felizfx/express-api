@@ -9,7 +9,7 @@ export default async function pagination(req, res, next) {
 	page = parseInt(page);
 	order = parseInt(order);
 
-	if (limit > 0 && page > 0) {
+	if (limit > 0 && page > 0 && !isNaN(order)) {
 		const itens = await req.result
 			.sort({ [orderBy]: order })
 			.skip((page - 1) * limit)
