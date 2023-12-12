@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-export default async function sendEmail (options) {
+export default async function sendEmail (options, html) {
 	const transporter = nodemailer.createTransport({
 		service: "gmail",
 		auth: {
@@ -13,8 +13,8 @@ export default async function sendEmail (options) {
 		from: "ChatAPI using express",
 		to: options.email,
 		subject: options.subject,
-		text: options.message
-		// html:
+		text: options.message,
+		html: await html
 	};
 
 	await transporter.sendMail(mailOptions);

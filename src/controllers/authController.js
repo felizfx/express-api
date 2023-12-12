@@ -8,6 +8,7 @@ import sendEmail from "../utils/email.js";
 import jwt from "jsonwebtoken";
 import ErrorResponse from "../errors/ErrorResponse.js";
 import crypto from "crypto";
+import createhtml from "../utils/createhtml.js";
 
 export default class AuthController {
 	static generateToken(info) {
@@ -68,15 +69,18 @@ export default class AuthController {
 			const resetToken = user.createPasswordUpdateToken();
 			await user.save({ validateBeforSave: false });
 
-			const resetUrl = `${req.protocol}://${req.get("host")}/resetpassword/${resetToken}`;
-			const message = `Forgot your password? Send a PATCH requesto to this URL: ${resetUrl}.\nIf you didn't forgot your password, please ignore this email!`;
+			// const resetUrl = `${req.protocol}://${req.get("host")}/resetpassword/${resetToken}`;
+
+			const options = {
+				name: user.name,
+				email: user.email,
+				subject: "Your password reset token (valid for 10 min)",
+				message: "Change password",
+				token: resetToken
+			};
 
 			try{ 
-				await sendEmail({
-					email: user.email,
-					subject: "Your password reset token (valid for 10 min)",
-					message
-				});
+				await sendEmail(options, createhtml(options));
 	
 				new ApiResponse().sendResponse(req, res);
 			} catch (e) {
