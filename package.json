@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "webpack",
-    "dev": "nodemon ./src/socket/socket-back.js",
+    "dev": "nodemon ./src/lib/app.socket.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
