@@ -21,7 +21,10 @@ export default class AuthController {
 
 	static decodeToken(token) {
 		return jwt.decode(token, { complete: true });
-		// return jwt.verify(token, process.env.SECRET);
+	}
+
+	static verifyToken(token) {
+		return jwt.verify(token, process.env.SECRET);
 	}
 
 	static async signUp(req, res, next) {
@@ -45,11 +48,9 @@ export default class AuthController {
 	static async login(req, res, next) {
 		try {
 			const { email, password } = req.body;
-
 			if( !email || !password ) return next(new RequestDataError("Insert all the fields"));
 
 			const user = await UserModel.findOne({ email }).select("+password");
-
 			if(!user || !await user.correctPassword(password, user.password)) return next(new UnauthorizedError("Incorect email or password"));
 
 			const token = AuthController.generateToken({id: user._id, email: email, role: user.role });
