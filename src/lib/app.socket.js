@@ -18,15 +18,9 @@ io.of("/start").on("connection", (socket) => {
 });
 
 io.of("/documents").on("connection", (socket) => {
-	console.log("doc connected");
-	insideDocumentHandlers(socket, io.of("/documents"));
+	insideDocumentHandlers(socket, io);
 });
 
 io.of("/").on("connection", (socket) => {
 	console.log("user connected, id:", socket.id);
-
-	socket.on("disconnect", (reason) => {
-		console.log(`user of id ${socket.id} disconnected`);
-		console.log(reason);
-	});
 });
