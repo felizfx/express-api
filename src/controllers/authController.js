@@ -35,7 +35,7 @@ export default class AuthController {
 
 			const user = await UserModel.create({...req.body});
 
-			const token = AuthController.generateToken({ id: user._id, email: user.email, role: user.role });
+			const token = AuthController.generateToken({ id: user._id, name: user.name, email: user.email, role: user.role });
 
 			const response = { token: token, user: { ...user._doc } };
 
@@ -53,7 +53,7 @@ export default class AuthController {
 			const user = await UserModel.findOne({ email }).select("+password");
 			if(!user || !await user.correctPassword(password, user.password)) return next(new UnauthorizedError("Incorect email or password"));
 
-			const token = AuthController.generateToken({id: user._id, email: email, role: user.role });
+			const token = AuthController.generateToken({id: user._id, name: user.name, email: email, role: user.role });
 
 			new ApiResponse(undefined, undefined, {token: token}).sendResponse(req, res);
 		} catch (e) {
