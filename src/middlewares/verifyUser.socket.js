@@ -4,7 +4,7 @@ export default function verifyUser(socket, next) {
 	const { token } = socket.handshake.auth;
 	try {
 		const user = AuthController.verifyToken(token);
-		socket.emit("document:verified-user", user);
+		socket.emit("user:verified-user", user);
 		next();
 	} catch (e) {
 		next(e);
