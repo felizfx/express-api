@@ -48,23 +48,24 @@ export function insideDocumentHandlers(socket, io) {
 	});
 
 	socket.on("document:user-connecting", (user, room) => {
-		if(!usersConnected.find(e => e.user == user.name && e.room == room )) {
-			usersConnected.push({room, user: user.name});
+		if(!usersConnected.find(e => e.user == user && e.room == room )) {
+			usersConnected.push({room, user: user});
 		}
 		
 		io.of("/documents").to(room).emit("document:user-connected", usersConnected.filter((value) => {
 			return value.room == room;
 		}));
 
+
 		socket.on("disconnect", () => {
-			deleteUserByUsername(user.name, room, usersConnected);
-			socket.to(room).emit("document:user-disconnected", user.name);
+			deleteUserByUsername(user.id, room, usersConnected);
+			socket.to(room).emit("document:user-disconnected", user.id);
 		});
 	});
 }
 
-function deleteUserByUsername(username, room, userList) {
-	const index = userList.findIndex(user => user.user === username && user.room === room);
+function deleteUserByUsername(userid, room, userList) {
+	const index = userList.findIndex(user => user.user.id === userid && user.room === room);
 
 	if (index !== -1) {
 		userList.splice(index, 1);

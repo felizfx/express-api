@@ -3,22 +3,22 @@ import mongoose from "mongoose";
 
 const chatSchema = mongoose.Schema({
 	id: { 
-		type: mongoose.Types.ObjectId
+		type: String
 	},
 	name: { 
 		type: String, 
-		required: [true, "Chat name is required"],
+		// required: [true, "Chat name is required"],
 		validate: {
 			validator: (value) => {
-				return value.length > 2 && value.length < 20;
+				return value.length > 2 && value.length < 40;
 			},
-			message: "O valor inseido é maior que 2 ou menor que 20 caracteres"
+			message: "O valor inseido é menor que 2 ou maior que 20 caracteres"
 		}
 	},
 	server: { 
 		type: mongoose.Schema.Types.ObjectId, 
 		ref: "servers",
-		required: [true, "Chat must constains a server"]
+		// required: [true, "Chat must constains a server"]
 	},
 	createdAt: { 
 		type: Date, 

@@ -2,6 +2,7 @@ import * as server from "../../server.js";
 import { Server } from "socket.io";
 // import { emitText } from "./documents/documents.handlers.js";
 import { registerDocumentHandlers, insideDocumentHandlers } from "./documents/documents.handlers.js";
+import { registerChatsHandlers } from "./chat/chats.handlers.js";
 import verifyUser from "../middlewares/verifyUser.socket.js";
 
 const io = new Server(server.httpServer, {
@@ -12,6 +13,7 @@ const io = new Server(server.httpServer, {
 
 io.of("/start").use(verifyUser);
 io.of("/documents").use(verifyUser);
+io.of("/chats").use(verifyUser);
 
 io.of("/start").on("connection", (socket) => {
 	registerDocumentHandlers(socket, io.of("/start"));
@@ -19,6 +21,10 @@ io.of("/start").on("connection", (socket) => {
 
 io.of("/documents").on("connection", (socket) => {
 	insideDocumentHandlers(socket, io);
+});
+
+io.of("/chats").on("connection", (socket) => {
+	registerChatsHandlers(socket, io);
 });
 
 io.of("/").on("connection", (socket) => {
