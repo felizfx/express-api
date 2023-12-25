@@ -1,10 +1,11 @@
 import express from "express";
 import ChatController from "../controllers/chatController.js";
 import pagination from "../middlewares/pagination.js";
+import rolesGuard from "../middlewares/guard.js";
 
 const routes = express.Router();
 
-routes.get("/chats", ChatController.getAllChats, pagination);
+routes.get("/chats", rolesGuard("owner") ,ChatController.getAllChats, pagination);
 routes.get("/chats/chat", ChatController.getChatsByFilters, pagination);
 routes.get("/chats/server", ChatController.getChatsByServerFilters);
 routes.get("/chats/server/:serverid", ChatController.getChatByServerId);

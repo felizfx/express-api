@@ -2,7 +2,7 @@ import express from "express";
 import serverRoutes from "./serverRoutes.js";
 import chatRoutes from "./chatRoutes.js";
 import authRoutes from "./authRoutes.js";
-import userRoutes from "./useRoutes.js";
+import userRoutes from "./userRoutes.js";
 import cors from "cors";
 
 let routes = [serverRoutes, chatRoutes, authRoutes, userRoutes];

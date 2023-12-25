@@ -5,7 +5,7 @@ import rolesGuard from "../middlewares/guard.js";
 
 const routes = express.Router();
 
-routes.route("/servers",)
+routes.route("/servers")
 	.get(ServerController.getAllServers, pagination)
 	.post(rolesGuard("admin", "owner"), ServerController.createServer);
 routes.get("/servers/:id", ServerController.getServerById);
